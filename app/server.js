@@ -10,6 +10,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
  
 app.use('/app', express.static (path.join (__dirname, '/public'))) 
+
+
+const apiRouter = require('../api/routes/apiRouter') 
+app.use('/api', apiRouter) 
+ 
  
 let port = process.env.PORT || 3000 
 app.listen (port) 
