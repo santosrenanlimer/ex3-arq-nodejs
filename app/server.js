@@ -14,8 +14,11 @@ app.use('/app', express.static (path.join (__dirname, '/public')))
 
 const apiRouter = require('../api/routes/apiRouter') 
 app.use('/api', apiRouter) 
- 
- 
+
+app.get('', (req, res) => {
+    res.send('Exercício 3 - Node')
+  })
+  
 let port = process.env.PORT || 3000 
 app.listen (port) 
  

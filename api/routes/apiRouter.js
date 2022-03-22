@@ -26,7 +26,7 @@ let checkToken = (req, res, next) => {
         req.token = token
     }
 
-    jwt.verify(req.token, (process.env.SECRET_KEY || 'eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY0NzkwNTQyMywiaWF0IjoxNjQ3OTA1NDIzfQ.zYJt760ZygVSrhZMNWIkV27vT-4x-CgRi3GZYFbCEFM'), (err, decodeToken) => {
+    jwt.verify(req.token, process.env.SECRET_KEY, (err, decodeToken) => {
         if (err) {
             res.status(401).json({ message: 'Acesso negado' })
             return
@@ -60,6 +60,10 @@ let isAdmin = (req, res, next) => {
             })
         })
 }
+
+apiRouter.get(endpoint, (req, res) => {
+    res.send("Exercício 3 - Node. Acesse '/app' para o front-end e '/api' para o back-end")
+  })
 
 apiRouter.get(endpoint + 'produtos', checkToken, (req, res) => {
     knex.select('*').from('produto')
@@ -165,7 +169,7 @@ apiRouter.post(endpoint + 'seguranca/login', (req, res) => {
                 let checkSenha = bcrypt.compareSync(req.body.senha, usuario.senha)
                 if (checkSenha) {
                     let tokenJWT = jwt.sign({ id: usuario.id },
-                        (process.env.SECRET_KEY || 'eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY0NzkwNTQyMywiaWF0IjoxNjQ3OTA1NDIzfQ.zYJt760ZygVSrhZMNWIkV27vT-4x-CgRi3GZYFbCEFM'), {
+                        process.env.SECRET_KEY, {
                         expiresIn: 3600
                     })
                     res.status(200).json({
